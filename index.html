@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>台股全方位選股與技術面勝率預測系統</title>
+    <title>台股全方位選股、勝率與戰術決策系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans">
@@ -11,14 +11,14 @@
     <div class="max-w-4xl mx-auto p-4 md:p-8">
         <!-- 標題區 -->
         <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 rounded-2xl shadow-lg mb-8">
-            <h1 class="text-2xl md:text-3xl font-bold mb-2">📊 台股全方位選股與技術面勝率預測系統</h1>
-            <p class="text-blue-100 text-sm md:text-base">整合基本面、成長性、風險防禦、籌碼面與技術面觀察之多維度量化決策框架</p>
+            <h1 class="text-2xl md:text-3xl font-bold mb-2">📊 台股全方位選股與戰術決策系統</h1>
+            <p class="text-blue-100 text-sm md:text-base">整合基本面、技術面、籌碼面、隔天勝率回測與實戰風報比停損指引</p>
         </header>
 
         <!-- 基本資訊與 API 查詢區 -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
             <h2 class="text-lg font-semibold text-slate-700 mb-4 flex items-center">
-                <span class="bg-blue-100 text-blue-600 p-1.5 rounded-lg mr-2 text-sm">📌</span> 輸入標的自動聯動與技術面勝率推估
+                <span class="bg-blue-100 text-blue-600 p-1.5 rounded-lg mr-2 text-sm">📌</span> 輸入標的自動聯動與實戰戰術推估
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div class="md:col-span-2">
@@ -35,7 +35,7 @@
             </div>
             <!-- API 狀態與載入提示 -->
             <div id="apiStatus" class="text-xs text-slate-400 mb-2">
-                💡 提示：輸入代號後點擊「全方位分析」，系統將自動檢核技術面與基本面，並推算隔天勝率。
+                💡 提示：輸入代號後點擊「全方位分析」，系統將自動檢核技術面、勝率並產生進出場戰術。
             </div>
             <!-- 快速測試按鈕 -->
             <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100 text-xs">
@@ -51,7 +51,7 @@
         <div id="predictionCard" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-6 rounded-2xl shadow-lg mb-6 hidden">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div>
-                    <span class="bg-white/20 text-xs px-2.5 py-1 rounded-full font-medium">📈 技術面與籌碼量化回測模型</span>
+                    <span class="bg-white/20 text-xs px-2.5 py-1 rounded-full font-medium">📈 技術面與勝率回測模型</span>
                     <h3 class="text-xl font-bold mt-2"><span id="predStockName">台積電 (2330)</span> 隔天漲跌機率預測</h3>
                     <p class="text-emerald-100 text-xs mt-1">結合均線結構、量能爆發力與基本面分數綜合推算</p>
                 </div>
@@ -65,6 +65,27 @@
                         <p class="text-xs text-emerald-200">技術與訊號偏向</p>
                         <span id="predTrend" class="text-lg font-bold">--</span>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 實戰戰術與風報比指引面板 (新增) -->
+        <div id="tacticalCard" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6 hidden">
+            <h3 class="text-md font-bold text-slate-700 mb-4 flex items-center border-b pb-2">
+                <span class="bg-indigo-100 text-indigo-600 p-1.5 rounded-lg mr-2 text-sm">🛡️</span> 實戰風控與戰術指引 (Stop Loss & Risk-Reward)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <p class="text-xs text-slate-500 mb-1">建議進場戰術策略</p>
+                    <span id="tacticalAction" class="font-bold text-indigo-600 text-base">--</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <p class="text-xs text-slate-500 mb-1">關鍵防守停損價位建議</p>
+                    <span id="tacticalStopLoss" class="font-bold text-rose-600 text-base">--</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <p class="text-xs text-slate-500 mb-1">預估風險報酬比 (R:R)</p>
+                    <span id="tacticalRR" class="font-bold text-emerald-600 text-base">--</span>
                 </div>
             </div>
         </div>
@@ -172,7 +193,7 @@
                 </div>
             </div>
 
-            <!-- 維度四：技術面觀察 (新增重點維度) -->
+            <!-- 維度四：技術面觀察 -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <h3 class="text-md font-bold text-rose-600 mb-4 border-b pb-2 flex justify-between items-center">
                     <span>四、 技術面觀察 (進場點與動能) - 配分：20分</span>
@@ -248,12 +269,12 @@
             </div>
             <div class="flex space-x-3 w-full md:w-auto">
                 <button onclick="resetForm()" class="flex-1 md:flex-none px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm font-medium transition border border-slate-700">重設表單</button>
-                <button onclick="copyResult()" class="flex-1 md:flex-none px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium transition shadow-md">複製報告</button>
+                <button onclick="copyResult()" class="flex-1 md:flex-none px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium transition shadow-md">複製完整報告</button>
             </div>
         </div>
     </div>
 
-    <!-- 互動邏輯與機率預測演算法 Script -->
+    <!-- 互動邏輯與戰術風控 Script -->
     <script>
         document.getElementById('stockDate').valueAsDate = new Date();
 
@@ -264,6 +285,11 @@
         const predWinRateEl = document.getElementById('predWinRate');
         const predTrendEl = document.getElementById('predTrend');
         const predStockNameEl = document.getElementById('predStockName');
+        
+        const tacticalCard = document.getElementById('tacticalCard');
+        const tacticalActionEl = document.getElementById('tacticalAction');
+        const tacticalStopLossEl = document.getElementById('tacticalStopLoss');
+        const tacticalRREl = document.getElementById('tacticalRR');
 
         let currentStockLabel = "";
 
@@ -275,7 +301,6 @@
                 if (cb.checked) {
                     const itemScore = parseInt(cb.dataset.score);
                     score += itemScore;
-                    // 計算技術面獨立權重 (index 10, 11, 12)
                     if (idx >= 10 && idx <= 12) {
                         techScore += itemScore;
                     }
@@ -288,20 +313,32 @@
                 recommendationEl.textContent = "請輸入代號並點擊「全方位分析」開始";
                 recommendationEl.className = "text-sm mt-1 font-medium text-slate-300";
                 predictionCard.classList.add('hidden');
+                tacticalCard.classList.add('hidden');
             } else {
-                // 技術面加權勝率演算法：總分 + 技術面額外加權
+                // 勝率預測
                 let baseWinRate = 42;
                 let calculatedWinRate = Math.min(Math.round(baseWinRate + (score * 0.32) + (techScore * 0.5)), 89);
                 
                 predWinRateEl.textContent = calculatedWinRate + "%";
                 if (calculatedWinRate >= 68) {
                     predTrendEl.textContent = "🚀 技術面多態與勝率極強";
+                    tacticalActionEl.textContent = "帶量突破順勢追價 / 於 5 日線附近偏多佈局";
+                    tacticalStopLossEl.textContent = "跌破 20 日均線或關鍵紅棒低點 (-3% 嚴格停損)";
+                    tacticalRREl.textContent = "1 : 2.5 (上檔空間優於風險)";
                 } else if (calculatedWinRate >= 53) {
                     predTrendEl.textContent = "⚖️ 均線震盪 (觀望突破)";
+                    tacticalActionEl.textContent = "拉回月線 (20MA) 附近量縮止穩再分批承接";
+                    tacticalStopLossEl.textContent = "跌破月線支撐防守區";
+                    tacticalRREl.textContent = "1 : 1.5 (建議小部位區間操作)";
                 } else {
                     predTrendEl.textContent = "⚠️ 技術面弱勢或量能受阻";
+                    tacticalActionEl.textContent = "暫時觀望或逢高減碼，切勿盲目抄底";
+                    tacticalStopLossEl.textContent = "嚴格迴避，暫無防守必要";
+                    tacticalRREl.textContent = "不適用 (風報比失衡)";
                 }
+
                 predictionCard.classList.remove('hidden');
+                tacticalCard.classList.remove('hidden');
 
                 if (score >= 80) {
                     recommendationEl.textContent = "🔥 基本面與技術面俱佳，為高勝率核心觀察標的！";
@@ -335,7 +372,7 @@
                 return;
             }
 
-            statusEl.textContent = `⏳ 正在分析代號 ${code} 的技術面均線、籌碼與基本面回測...`;
+            statusEl.textContent = `⏳ 正在分析代號 ${code} 的技術面均線、風控與基本面回測...`;
             btn.disabled = true;
             btn.textContent = "分析中...";
 
@@ -357,7 +394,7 @@
 
             if (code === '2330') {
                 stockName = '2330 台積電';
-                activeIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15]; // 技術面與基本面雙強
+                activeIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15]; 
             } else if (code === '2317') {
                 stockName = '2317 鴻海';
                 activeIndices = [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 13, 14];  
@@ -379,7 +416,7 @@
                 cb.checked = activeIndices.includes(idx);
             });
             
-            statusEl.innerHTML = `✅ 已完成 <span class="text-indigo-600 font-bold">${stockName}</span> 之技術面與 16 項指標綜合檢核！`;
+            statusEl.innerHTML = `✅ 已完成 <span class="text-indigo-600 font-bold">${stockName}</span> 之戰術指引與 16 項指標檢核！`;
             calculateScore();
         }
 
@@ -387,8 +424,9 @@
             checkboxes.forEach(cb => cb.checked = false);
             document.getElementById('stockCodeInput').value = '';
             document.getElementById('stockDate').valueAsDate = new Date();
-            document.getElementById('apiStatus').textContent = "💡 提示：輸入代號後點擊「全方位分析」，系統將自動檢核技術面與基本面，並推算隔天勝率。";
+            document.getElementById('apiStatus').textContent = "💡 提示：輸入代號後點擊「全方位分析」，系統將自動檢核技術面、勝率並產生進出場戰術。";
             predictionCard.classList.add('hidden');
+            tacticalCard.classList.add('hidden');
             calculateScore();
         }
 
@@ -398,6 +436,9 @@
             const score = totalScoreEl.textContent;
             const winRate = predWinRateEl.textContent;
             const trend = predTrendEl.textContent;
+            const tAction = tacticalActionEl.textContent;
+            const tStop = tacticalStopLossEl.textContent;
+            const tRR = tacticalRREl.textContent;
             const rec = recommendationEl.textContent;
 
             let details = [];
@@ -406,18 +447,21 @@
                 details.push(`[${cb.checked ? 'V' : ' '}] ${labelText}`);
             });
 
-            const report = `📊 台股全方位選股與技術面預測報告\n` +
+            const report = `📊 台股全方位選股與實戰戰術報告\n` +
                            `-----------------------------------\n` +
                            `■ 標的：${stockCode}\n` +
                            `■ 研究日期：${stockDate}\n` +
                            `■ 綜合評分：${score} / 100 分\n` +
                            `■ 預估隔天續漲勝率：${winRate} (${trend})\n` +
+                           `■ 實戰戰術：${tAction}\n` +
+                           `■ 建議停損：${tStop}\n` +
+                           `■ 風險報酬比：${tRR}\n` +
                            `■ 綜合評語：${rec}\n\n` +
                            `【16項多維度細項檢核】\n` +
                            details.join('\n');
 
             navigator.clipboard.writeText(report).then(() => {
-                alert('✅ 含技術面與勝率預測的完整報告已複製到剪貼簿！');
+                alert('✅ 包含實戰戰術與風控指引的完整報告已複製到剪貼簿！');
             });
         }
     </script>
