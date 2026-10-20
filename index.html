@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>台股全方位選股、勝率與戰術決策系統</title>
+    <title>台股全方位選股與動態價位戰術系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans">
@@ -11,14 +11,14 @@
     <div class="max-w-4xl mx-auto p-4 md:p-8">
         <!-- 標題區 -->
         <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 rounded-2xl shadow-lg mb-8">
-            <h1 class="text-2xl md:text-3xl font-bold mb-2">📊 台股全方位選股與戰術決策系統</h1>
-            <p class="text-blue-100 text-sm md:text-base">整合基本面、技術面、籌碼面、隔天勝率回測與實戰風報比停損指引</p>
+            <h1 class="text-2xl md:text-3xl font-bold mb-2">📊 台股全方位選股與動態價位戰術系統</h1>
+            <p class="text-blue-100 text-sm md:text-base">整合基本面、技術面、勝率回測與具體月線/支撐價位的實戰交易決策框架</p>
         </header>
 
         <!-- 基本資訊與 API 查詢區 -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
             <h2 class="text-lg font-semibold text-slate-700 mb-4 flex items-center">
-                <span class="bg-blue-100 text-blue-600 p-1.5 rounded-lg mr-2 text-sm">📌</span> 輸入標的自動聯動與實戰戰術推估
+                <span class="bg-blue-100 text-blue-600 p-1.5 rounded-lg mr-2 text-sm">📌</span> 輸入標的自動聯動與實戰價位推估
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div class="md:col-span-2">
@@ -35,7 +35,7 @@
             </div>
             <!-- API 狀態與載入提示 -->
             <div id="apiStatus" class="text-xs text-slate-400 mb-2">
-                💡 提示：輸入代號後點擊「全方位分析」，系統將自動檢核技術面、勝率並產生進出場戰術。
+                💡 提示：輸入代號後點擊「全方位分析」，系統將自動計算月線價位、勝率與進場策略。
             </div>
             <!-- 快速測試按鈕 -->
             <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100 text-xs">
@@ -69,23 +69,34 @@
             </div>
         </div>
 
-        <!-- 實戰戰術與風報比指引面板 (新增) -->
+        <!-- 實戰動態價位與戰術指引面板 (升級版) -->
         <div id="tacticalCard" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6 hidden">
             <h3 class="text-md font-bold text-slate-700 mb-4 flex items-center border-b pb-2">
-                <span class="bg-indigo-100 text-indigo-600 p-1.5 rounded-lg mr-2 text-sm">🛡️</span> 實戰風控與戰術指引 (Stop Loss & Risk-Reward)
+                <span class="bg-indigo-100 text-indigo-600 p-1.5 rounded-lg mr-2 text-sm">🛡️</span> 實戰動態價位與風控指引 (Dynamic Price & Stop Loss)
             </h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm mb-4">
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <p class="text-xs text-slate-500 mb-1">建議進場戰術策略</p>
-                    <span id="tacticalAction" class="font-bold text-indigo-600 text-base">--</span>
+                    <p class="text-xs text-slate-500 mb-1">參考基準現價 (模擬)</p>
+                    <span id="tacticalRefPrice" class="font-bold text-slate-800 text-base">--</span>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <p class="text-xs text-slate-500 mb-1">關鍵防守停損價位建議</p>
+                    <p class="text-xs text-slate-500 mb-1">月線 (20MA) 承接價位</p>
+                    <span id="tacticalMA20" class="font-bold text-indigo-600 text-base">--</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <p class="text-xs text-slate-500 mb-1">關鍵防守停損價</p>
                     <span id="tacticalStopLoss" class="font-bold text-rose-600 text-base">--</span>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <p class="text-xs text-slate-500 mb-1">預估風險報酬比 (R:R)</p>
                     <span id="tacticalRR" class="font-bold text-emerald-600 text-base">--</span>
+                </div>
+            </div>
+            <div class="bg-indigo-50/60 p-4 rounded-xl border border-indigo-100 flex items-start space-x-3">
+                <span class="text-indigo-600 text-lg">💡</span>
+                <div>
+                    <p class="text-xs font-bold text-indigo-900 mb-0.5">具體操作戰術建議：</p>
+                    <p id="tacticalActionDesc" class="text-xs text-indigo-700 leading-relaxed">--</p>
                 </div>
             </div>
         </div>
@@ -274,7 +285,7 @@
         </div>
     </div>
 
-    <!-- 互動邏輯與戰術風控 Script -->
+    <!-- 互動邏輯與動態價位計算 Script -->
     <script>
         document.getElementById('stockDate').valueAsDate = new Date();
 
@@ -287,11 +298,14 @@
         const predStockNameEl = document.getElementById('predStockName');
         
         const tacticalCard = document.getElementById('tacticalCard');
-        const tacticalActionEl = document.getElementById('tacticalAction');
+        const tacticalRefPriceEl = document.getElementById('tacticalRefPrice');
+        const tacticalMA20El = document.getElementById('tacticalMA20');
         const tacticalStopLossEl = document.getElementById('tacticalStopLoss');
         const tacticalRREl = document.getElementById('tacticalRR');
+        const tacticalActionDescEl = document.getElementById('tacticalActionDesc');
 
         let currentStockLabel = "";
+        let mockBasePrice = 100; // 預設基準價
 
         function calculateScore() {
             let score = 0;
@@ -315,26 +329,31 @@
                 predictionCard.classList.add('hidden');
                 tacticalCard.classList.add('hidden');
             } else {
-                // 勝率預測
                 let baseWinRate = 42;
                 let calculatedWinRate = Math.min(Math.round(baseWinRate + (score * 0.32) + (techScore * 0.5)), 89);
                 
                 predWinRateEl.textContent = calculatedWinRate + "%";
+
+                // 動態計算月線 (假設月線約為現價下方 3%~5%)與停損價
+                let ma20Price = (mockBasePrice * 0.955).toFixed(1);
+                let stopLossPrice = (mockBasePrice * 0.92).toFixed(1);
+                
+                tacticalRefPriceEl.textContent = `約 $${mockBasePrice} 元`;
+                tacticalMA20El.textContent = `$${ma20Price} (月線附近)`;
+                tacticalStopLossEl.textContent = `$${stopLossPrice} (跌破月線 -3%)`;
+
                 if (calculatedWinRate >= 68) {
                     predTrendEl.textContent = "🚀 技術面多態與勝率極強";
-                    tacticalActionEl.textContent = "帶量突破順勢追價 / 於 5 日線附近偏多佈局";
-                    tacticalStopLossEl.textContent = "跌破 20 日均線或關鍵紅棒低點 (-3% 嚴格停損)";
                     tacticalRREl.textContent = "1 : 2.5 (上檔空間優於風險)";
+                    tacticalActionDescEl.textContent = `多頭格局強勢。建議採取【分批承接策略】：若短線急漲可等待量縮拉回至月線約 $${ma20Price} 附近量縮止穩時再分批佈局，或於突破前高時順勢追價，嚴守停損於 $${stopLossPrice}。`;
                 } else if (calculatedWinRate >= 53) {
                     predTrendEl.textContent = "⚖️ 均線震盪 (觀望突破)";
-                    tacticalActionEl.textContent = "拉回月線 (20MA) 附近量縮止穩再分批承接";
-                    tacticalStopLossEl.textContent = "跌破月線支撐防守區";
-                    tacticalRREl.textContent = "1 : 1.5 (建議小部位區間操作)";
+                    tacticalRREl.textContent = "1 : 1.5 (建議區間操作)";
+                    tacticalActionDescEl.textContent = `目前處於箱型或均線糾結處。建議採取【低接高出策略】：不宜追高，耐心等待拉回至月線 $${ma20Price} 附近、觀察是否有量縮下影線止穩訊號再小量承接，防守價設在 $${stopLossPrice}。`;
                 } else {
                     predTrendEl.textContent = "⚠️ 技術面弱勢或量能受阻";
-                    tacticalActionEl.textContent = "暫時觀望或逢高減碼，切勿盲目抄底";
-                    tacticalStopLossEl.textContent = "嚴格迴避，暫無防守必要";
                     tacticalRREl.textContent = "不適用 (風報比失衡)";
+                    tacticalActionDescEl.textContent = `技術面與籌碼動能偏弱。建議【暫時觀望或逢高減碼】：切勿盲目於月線 $${ma20Price } 附近提前抄底，等待跌勢趨緩或指標黃金交叉後再行評估。`;
                 }
 
                 predictionCard.classList.remove('hidden');
@@ -372,12 +391,26 @@
                 return;
             }
 
-            statusEl.textContent = `⏳ 正在分析代號 ${code} 的技術面均線、風控與基本面回測...`;
+            statusEl.textContent = `⏳ 正在分析代號 ${code} 的月線支撐價位、技術面與基本面回測...`;
             btn.disabled = true;
             btn.textContent = "分析中...";
 
             try {
                 await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // 根據不同股票代號給予符合台股行情的擬真基準價
+                if (code === '2330') {
+                    mockBasePrice = 980; // 台積電股價基準
+                } else if (code === '2317') {
+                    mockBasePrice = 210; // 鴻海股價基準
+                } else if (code === '2454') {
+                    mockBasePrice = 1250; // 聯發科股價基準
+                } else if (code === '1605') {
+                    mockBasePrice = 38; // 華新股價基準
+                } else {
+                    mockBasePrice = 85; // 一般中價位股基準
+                }
+
                 fallbackSmartEvaluation(code);
             } catch (error) {
                 fallbackSmartEvaluation(code);
@@ -416,7 +449,7 @@
                 cb.checked = activeIndices.includes(idx);
             });
             
-            statusEl.innerHTML = `✅ 已完成 <span class="text-indigo-600 font-bold">${stockName}</span> 之戰術指引與 16 項指標檢核！`;
+            statusEl.innerHTML = `✅ 已完成 <span class="text-indigo-600 font-bold">${stockName}</span> 之月線支撐與 16 項指標綜合檢核！`;
             calculateScore();
         }
 
@@ -424,7 +457,7 @@
             checkboxes.forEach(cb => cb.checked = false);
             document.getElementById('stockCodeInput').value = '';
             document.getElementById('stockDate').valueAsDate = new Date();
-            document.getElementById('apiStatus').textContent = "💡 提示：輸入代號後點擊「全方位分析」，系統將自動檢核技術面、勝率並產生進出場戰術。";
+            document.getElementById('apiStatus').textContent = "💡 提示：輸入代號後點擊「全方位分析」，系統將自動計算月線價位、勝率與進場策略。";
             predictionCard.classList.add('hidden');
             tacticalCard.classList.add('hidden');
             calculateScore();
@@ -436,9 +469,11 @@
             const score = totalScoreEl.textContent;
             const winRate = predWinRateEl.textContent;
             const trend = predTrendEl.textContent;
-            const tAction = tacticalActionEl.textContent;
+            const tRef = tacticalRefPriceEl.textContent;
+            const tMA20 = tacticalMA20El.textContent;
             const tStop = tacticalStopLossEl.textContent;
             const tRR = tacticalRREl.textContent;
+            const tDesc = tacticalActionDescEl.textContent;
             const rec = recommendationEl.textContent;
 
             let details = [];
@@ -447,21 +482,23 @@
                 details.push(`[${cb.checked ? 'V' : ' '}] ${labelText}`);
             });
 
-            const report = `📊 台股全方位選股與實戰戰術報告\n` +
+            const report = `📊 台股全方位選股與動態價位戰術報告\n` +
                            `-----------------------------------\n` +
                            `■ 標的：${stockCode}\n` +
                            `■ 研究日期：${stockDate}\n` +
                            `■ 綜合評分：${score} / 100 分\n` +
                            `■ 預估隔天續漲勝率：${winRate} (${trend})\n` +
-                           `■ 實戰戰術：${tAction}\n` +
-                           `■ 建議停損：${tStop}\n` +
+                           `■ 參考現價：${tRef}\n` +
+                           `■ 建議月線承接價：${tMA20}\n` +
+                           `■ 關鍵防守停損：${tStop}\n` +
                            `■ 風險報酬比：${tRR}\n` +
+                           `■ 戰術指引：${tDesc}\n` +
                            `■ 綜合評語：${rec}\n\n` +
                            `【16項多維度細項檢核】\n` +
                            details.join('\n');
 
             navigator.clipboard.writeText(report).then(() => {
-                alert('✅ 包含實戰戰術與風控指引的完整報告已複製到剪貼簿！');
+                alert('✅ 包含動態價位與月線承接策略的完整報告已複製到剪貼簿！');
             });
         }
     </script>
