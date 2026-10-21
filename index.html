@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>台股全方位選股與戰術決策系統</title>
+    <title>台股全方位選股與實戰戰術系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans">
@@ -11,23 +11,23 @@
     <div class="max-w-4xl mx-auto p-4 md:p-8">
         <!-- 標題區 -->
         <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 rounded-2xl shadow-lg mb-8">
-            <h1 class="text-2xl md:text-3xl font-bold mb-2">📊 台股全方位選股與戰術決策系統</h1>
-            <p class="text-blue-100 text-sm md:text-base">支援直接輸入公司名稱或代號，精準計算月線、停損點與實戰風報比</p>
+            <h1 class="text-2xl md:text-3xl font-bold mb-2">📊 台股三維選股與實戰戰術系統</h1>
+            <p class="text-blue-100 text-sm md:text-base">輸入最新真實股價，秒級精算月線支撐、停損風報比與隔天勝率</p>
         </header>
 
-        <!-- 基本資訊與搜尋區 -->
+        <!-- 基本資訊與現價輸入區 -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
             <h2 class="text-lg font-semibold text-slate-700 mb-4 flex items-center">
-                <span class="bg-blue-100 text-blue-600 p-1.5 rounded-lg mr-2 text-sm">📌</span> 輸入股票名稱/代號與現價
+                <span class="bg-blue-100 text-blue-600 p-1.5 rounded-lg mr-2 text-sm">📌</span> 標的資訊與真實現價輸入
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">股票代號或名稱</label>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">股票名稱或代號</label>
                     <input type="text" id="stockCodeInput" placeholder="例如：鴻海 或 2317" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">即時現價 (可手動校正)</label>
-                    <input type="number" id="stockPriceInput" step="0.5" placeholder="例如：241.5" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none font-bold text-indigo-600">
+                    <label class="block text-sm font-medium text-slate-600 mb-1">輸入當前真實股價 (元)</label>
+                    <input type="number" id="stockPriceInput" step="0.1" placeholder="例如：241.5" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none font-bold text-indigo-600">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-600 mb-1">研究日期</label>
@@ -37,22 +37,22 @@
             
             <div class="flex justify-between items-center pt-2 border-t border-slate-100">
                 <div class="flex flex-wrap gap-2 text-xs">
-                    <span class="text-slate-400 self-center">快速代入：</span>
-                    <button onclick="quickSelect('台積電', 1035)" class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition">台積電 ($1035)</button>
-                    <button onclick="quickSelect('鴻海', 241.5)" class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition">鴻海 ($241.5)</button>
-                    <button onclick="quickSelect('聯發科', 1310)" class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition">聯發科 ($1310)</button>
+                    <span class="text-slate-400 self-center">快速試算測試：</span>
+                    <button onclick="quickSelect('台積電 (2330)', 1035)" class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition">台積電 ($1035)</button>
+                    <button onclick="quickSelect('鴻海 (2317)', 241.5)" class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition">鴻海 ($241.5)</button>
+                    <button onclick="quickSelect('聯發科 (2454)', 1310)" class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition">聯發科 ($1310)</button>
                 </div>
-                <button onclick="analyzeStock()" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-medium transition shadow-md">立即分析與計算</button>
+                <button onclick="analyzeStock()" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-medium transition shadow-md">立即精算戰術</button>
             </div>
         </div>
 
-        <!-- 隔天漲跌機率與技術面預測面板 -->
+        <!-- 隔天漲跌機率面板 -->
         <div id="predictionCard" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-6 rounded-2xl shadow-lg mb-6 hidden">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div>
-                    <span class="bg-white/20 text-xs px-2.5 py-1 rounded-full font-medium">📈 技術面與勝率回測模型</span>
+                    <span class="bg-white/20 text-xs px-2.5 py-1 rounded-full font-medium">📈 技術面與量化回測模型</span>
                     <h3 class="text-xl font-bold mt-2"><span id="predStockName">--</span> 隔天漲跌機率預測</h3>
-                    <p class="text-emerald-100 text-xs mt-1">結合現價、均線結構與基本面綜合推算</p>
+                    <p class="text-emerald-100 text-xs mt-1">依據當前真實股價、均線排列與綜合評分推算</p>
                 </div>
                 <div class="flex items-center space-x-6 bg-black/15 px-6 py-3 rounded-xl border border-white/10">
                     <div class="text-center">
@@ -68,18 +68,18 @@
             </div>
         </div>
 
-        <!-- 實戰真實價位與戰術指引面板 -->
+        <!-- 實戰精算價位與戰術指引面板 -->
         <div id="tacticalCard" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6 hidden">
             <h3 class="text-md font-bold text-slate-700 mb-4 flex items-center border-b pb-2">
-                <span class="bg-indigo-100 text-indigo-600 p-1.5 rounded-lg mr-2 text-sm">🛡️</span> 實戰動態價位與風控指引 (Live Price & Stop Loss)
+                <span class="bg-indigo-100 text-indigo-600 p-1.5 rounded-lg mr-2 text-sm">🛡️</span> 實戰精算價位與風控指引 (Tactical Levels & Stop Loss)
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm mb-4">
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <p class="text-xs text-slate-500 mb-1">目前校正現價</p>
+                    <p class="text-xs text-slate-500 mb-1">你輸入的真實現價</p>
                     <span id="tacticalRefPrice" class="font-bold text-slate-800 text-base">--</span>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <p class="text-xs text-slate-500 mb-1">月線 (20MA) 承接價位</p>
+                    <p class="text-xs text-slate-500 mb-1">推算月線 (20MA) 承接價</p>
                     <span id="tacticalMA20" class="font-bold text-indigo-600 text-base">--</span>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
@@ -87,14 +87,14 @@
                     <span id="tacticalStopLoss" class="font-bold text-rose-600 text-base">--</span>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <p class="text-xs text-slate-500 mb-1">預估風險報酬比 (R:R)</p>
+                    <p class="text-xs text-slate-500 mb-1">風險報酬比 (R:R)</p>
                     <span id="tacticalRREl" class="font-bold text-emerald-600 text-base">--</span>
                 </div>
             </div>
             <div class="bg-indigo-50/60 p-4 rounded-xl border border-indigo-100 flex items-start space-x-3">
                 <span class="text-indigo-600 text-lg">💡</span>
                 <div>
-                    <p class="text-xs font-bold text-indigo-900 mb-0.5">具體實戰操作策略：</p>
+                    <p class="text-xs font-bold text-indigo-900 mb-0.5">具體實戰戰術指引：</p>
                     <p id="tacticalActionDesc" class="text-xs text-indigo-700 leading-relaxed">--</p>
                 </div>
             </div>
@@ -102,7 +102,6 @@
 
         <!-- 評分檢核清單 (16項 5維度版) -->
         <div class="space-y-6 mb-8">
-            
             <!-- 維度一：基本面 -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <h3 class="text-md font-bold text-blue-600 mb-4 border-b pb-2 flex justify-between items-center">
@@ -111,28 +110,28 @@
                 </h3>
                 <div class="space-y-3">
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="5" class="score-checkbox mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500" data-index="0">
+                        <input type="checkbox" data-score="5" class="score-checkbox mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
                         <div>
                             <span class="font-medium text-slate-700">毛利率高於同業且趨勢向上</span>
                             <p class="text-xs text-slate-500">電子業 ≥ 30% / 傳產業 ≥ 20% (5分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="5" class="score-checkbox mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500" data-index="1">
+                        <input type="checkbox" data-score="5" class="score-checkbox mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
                         <div>
                             <span class="font-medium text-slate-700">營業利益率 > 10%</span>
                             <p class="text-xs text-slate-500">本業營運效率佳，費用控管得宜 (5分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="5" class="score-checkbox mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500" data-index="2">
+                        <input type="checkbox" data-score="5" class="score-checkbox mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
                         <div>
                             <span class="font-medium text-slate-700">近 4 季皆保持穩定獲利</span>
                             <p class="text-xs text-slate-500">歸屬母公司淨利皆為正數 (5分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="5" class="score-checkbox mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500" data-index="3">
+                        <input type="checkbox" data-score="5" class="score-checkbox mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
                         <div>
                             <span class="font-medium text-slate-700">股東權益報酬率 (ROE) > 15%</span>
                             <p class="text-xs text-slate-500">自有資本創造淨利的高效能表現 (5分)</p>
@@ -149,21 +148,21 @@
                 </h3>
                 <div class="space-y-3">
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500" data-index="4">
+                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
                         <div>
                             <span class="font-medium text-slate-700">單月營收 YoY 連續 3 個月大於 10%</span>
                             <p class="text-xs text-slate-500">營運擴張動能強勁 (7分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500" data-index="5">
+                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
                         <div>
                             <span class="font-medium text-slate-700">最新單季 EPS YoY > 15% (或創新高)</span>
                             <p class="text-xs text-slate-500">盈餘具備加速成長力道 (7分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="6" class="score-checkbox mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500" data-index="6">
+                        <input type="checkbox" data-score="6" class="score-checkbox mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
                         <div>
                             <span class="font-medium text-slate-700">處於長線趨勢產業並具備核心/龍頭地位</span>
                             <p class="text-xs text-slate-500">如 AI、先進製程供應鏈 (6分)</p>
@@ -180,21 +179,21 @@
                 </h3>
                 <div class="space-y-3">
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500" data-index="7">
+                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500">
                         <div>
                             <span class="font-medium text-slate-700">近 4 季每股自由現金流 > 0 元</span>
                             <p class="text-xs text-slate-500">帳面獲利有扎實現金流入 (7分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500" data-index="8">
+                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500">
                         <div>
                             <span class="font-medium text-slate-700">負債比率 < 50% 且利息保障倍數 > 5 倍</span>
                             <p class="text-xs text-slate-500">無高槓桿沉重利息壓力 (7分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="6" class="score-checkbox mt-1 w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500" data-index="9">
+                        <input type="checkbox" data-score="6" class="score-checkbox mt-1 w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500">
                         <div>
                             <span class="font-medium text-slate-700">流動比率 > 150% 且速動比率 > 100%</span>
                             <p class="text-xs text-slate-500">短期償債與應變能力強 (6分)</p>
@@ -211,21 +210,21 @@
                 </h3>
                 <div class="space-y-3">
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500" data-index="10">
+                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500">
                         <div>
                             <span class="font-medium text-slate-700">股價站上多頭均線 (5日 / 20日 / 60日 MA 多頭排列)</span>
                             <p class="text-xs text-slate-500">短期與中期趨勢均呈上升管道 (7分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500" data-index="11">
+                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500">
                         <div>
                             <span class="font-medium text-slate-700">成交量爆量放大 (高於 20 日均量 1.5 倍以上) 突破盤整</span>
                             <p class="text-xs text-slate-500">主力資金帶量發動 (7分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="6" class="score-checkbox mt-1 w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500" data-index="12">
+                        <input type="checkbox" data-score="6" class="score-checkbox mt-1 w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500">
                         <div>
                             <span class="font-medium text-slate-700">KD / MACD 出現低檔黃金交叉且指標向上</span>
                             <p class="text-xs text-slate-500">技術指標轉強 (6分)</p>
@@ -242,21 +241,21 @@
                 </h3>
                 <div class="space-y-3">
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-purple-600 rounded border-slate-300 focus:ring-purple-500" data-index="13">
+                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-purple-600 rounded border-slate-300 focus:ring-purple-500">
                         <div>
                             <span class="font-medium text-slate-700">現金殖利率具備吸引力 (> 3% 或高於定存)</span>
                             <p class="text-xs text-slate-500">下檔保護與存股價值 (7分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-purple-600 rounded border-slate-300 focus:ring-purple-500" data-index="14">
+                        <input type="checkbox" data-score="7" class="score-checkbox mt-1 w-4 h-4 text-purple-600 rounded border-slate-300 focus:ring-purple-500">
                         <div>
                             <span class="font-medium text-slate-700">本益比 (PE) 處於歷史合理或相對低檔區</span>
                             <p class="text-xs text-slate-500">未過度泡沫化 (7分)</p>
                         </div>
                     </label>
                     <label class="flex items-start space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition">
-                        <input type="checkbox" data-score="6" class="score-checkbox mt-1 w-4 h-4 text-purple-600 rounded border-slate-300 focus:ring-purple-500" data-index="15">
+                        <input type="checkbox" data-score="6" class="score-checkbox mt-1 w-4 h-4 text-purple-600 rounded border-slate-300 focus:ring-purple-500">
                         <div>
                             <span class="font-medium text-slate-700">法人 (外資/投信) 近期呈現連續買超趨勢</span>
                             <p class="text-xs text-slate-500">大戶資金進駐，籌碼集中 (6分)</p>
@@ -264,7 +263,6 @@
                     </label>
                 </div>
             </div>
-
         </div>
 
         <!-- 評分結果輸出區 -->
@@ -275,7 +273,7 @@
                     <span id="totalScore" class="text-4xl font-extrabold text-blue-400">0</span>
                     <span class="text-xl text-slate-400">/ 100 分</span>
                 </div>
-                <p id="recommendation" class="text-sm mt-1 font-medium text-slate-300">請輸入名稱/代號與現價並點擊「立即分析與計算」</p>
+                <p id="recommendation" class="text-sm mt-1 font-medium text-slate-300">請輸入名稱與現價，點擊「立即精算戰術」</p>
             </div>
             <div class="flex space-x-3 w-full md:w-auto">
                 <button onclick="resetForm()" class="flex-1 md:flex-none px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm font-medium transition border border-slate-700">重設表單</button>
@@ -305,18 +303,6 @@
 
         let currentStockLabel = "";
 
-        // 智慧名稱對應字典（可隨時擴充常用台股）
-        const stockNameMapping = {
-            "台積電": { code: "2330", defaultPrice: 1035, indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15] },
-            "2330": { code: "2330", defaultPrice: 1035, indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15] },
-            "鴻海": { code: "2317", defaultPrice: 241.5, indices: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 13, 14] },
-            "2317": { code: "2317", defaultPrice: 241.5, indices: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 13, 14] },
-            "聯發科": { code: "2454", defaultPrice: 1310, indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15] },
-            "2454": { code: "2454", defaultPrice: 1310, indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15] },
-            "華新": { code: "1605", defaultPrice: 36.5, indices: [1, 2, 4, 6, 7, 8, 10, 11, 13, 14] },
-            "1605": { code: "1605", defaultPrice: 36.5, indices: [1, 2, 4, 6, 7, 8, 10, 11, 13, 14] }
-        };
-
         function calculateScore() {
             let score = 0;
             let techScore = 0;
@@ -334,7 +320,7 @@
             totalScoreEl.textContent = score;
 
             if (score === 0) {
-                recommendationEl.textContent = "請輸入名稱/代號與現價並點擊「立即分析與計算」";
+                recommendationEl.textContent = "請輸入名稱與現價，點擊「立即精算戰術」";
                 recommendationEl.className = "text-sm mt-1 font-medium text-slate-300";
                 predictionCard.classList.add('hidden');
                 tacticalCard.classList.add('hidden');
@@ -346,32 +332,33 @@
 
                 let currentPrice = parseFloat(document.getElementById('stockPriceInput').value) || 100;
 
+                // 精確百分比計算
                 let ma20Price = (currentPrice * 0.965).toFixed(1);
                 let stopLossPrice = (currentPrice * 0.94).toFixed(1);
                 
                 tacticalRefPriceEl.textContent = `$${currentPrice} 元`;
-                tacticalMA20El.textContent = `$${ma20Price} (月線附近)`;
-                tacticalStopLossEl.textContent = `$${stopLossPrice} (跌破月線)`;
+                tacticalMA20El.textContent = `$${ma20Price} (約 -3.5%)`;
+                tacticalStopLossEl.textContent = `$${stopLossPrice} (嚴格 -6%)`;
 
                 if (calculatedWinRate >= 68) {
                     predTrendEl.textContent = "🚀 技術面多態與勝率極強";
-                    tacticalRREl.textContent = "1 : 2.5 (上檔空間優於風險)";
-                    tacticalActionDescEl.textContent = `多頭格局強勢。現價 $${currentPrice} 附近若短線急漲，建議等待量縮拉回至月線約 $${ma20Price} 附近量縮止穩時再分批佈局，嚴守停損於 $${stopLossPrice}。`;
+                    tacticalRREl.textContent = "1 : 2.5 (風報比優異)";
+                    tacticalActionDescEl.textContent = `多頭強勢。現價 $${currentPrice} 若追高風險較大，建議耐心等待拉回至月線約 $${ma20Price} 附近、觀察是否出現「量縮止穩訊號」再分批承接，並將 $${stopLossPrice} 設為關鍵停損位。`;
                 } else if (calculatedWinRate >= 53) {
                     predTrendEl.textContent = "⚖️ 均線震盪 (觀望突破)";
-                    tacticalRREl.textContent = "1 : 1.5 (建議區間操作)";
-                    tacticalActionDescEl.textContent = `目前處於箱型或均線糾結。不宜追高現價 $${currentPrice}，建議耐心等待拉回至月線 $${ma20Price} 附近、觀察是否有量縮下影線止穩訊號再承接。`;
+                    tacticalRREl.textContent = "1 : 1.5 (區間操作)";
+                    tacticalActionDescEl.textContent = `目前處於箱型震盪。不宜直接追高現價 $${currentPrice}，建議觀察是否拉回至月線 $${ma20Price} 附近止穩再小量承接。`;
                 } else {
                     predTrendEl.textContent = "⚠️ 技術面弱勢或量能受阻";
                     tacticalRREl.textContent = "不適用 (風報比失衡)";
-                    tacticalActionDescEl.textContent = `技術面與籌碼動能偏弱。現價 $${currentPrice} 處於回檔段，建議暫時觀望或逢高減碼，切勿盲目於月線 $${ma20Price} 提前抄底。`;
+                    tacticalActionDescEl.textContent = `動能偏弱。現價 $${currentPrice} 處於修正段，建議暫時觀望，切勿盲目抄底。`;
                 }
 
                 predictionCard.classList.remove('hidden');
                 tacticalCard.classList.remove('hidden');
 
                 if (score >= 80) {
-                    recommendationEl.textContent = "🔥 基本面與技術面俱佳，為高勝率核心觀察標的！";
+                    recommendationEl.textContent = "🔥 基本面與技術面雙強，為高勝率核心觀察標的！";
                     recommendationEl.className = "text-sm mt-1 font-medium text-emerald-400";
                 } else if (score >= 60) {
                     recommendationEl.textContent = "⚠️ 表現均衡，建議等待技術面量增突破時再行佈局。";
@@ -398,33 +385,25 @@
             const priceInput = document.getElementById('stockPriceInput').value;
 
             if (!inputVal) {
-                alert('請輸入股票代號或名稱！');
+                alert('請先輸入股票名稱或代號！');
                 return;
             }
 
-            let activeIndices = [];
-            let matchedData = stockNameMapping[inputVal];
-
-            if (matchedData) {
-                currentStockLabel = `${matchedData.code} ${inputVal.replace(/[0-9]/g, '')}`;
-                activeIndices = matchedData.indices;
-                if (!priceInput) {
-                    document.getElementById('stockPriceInput').value = matchedData.defaultPrice;
-                }
-            } else {
-                currentStockLabel = inputVal;
-                // 一般預設合格標的項目
-                activeIndices = [0, 1, 2, 4, 7, 8, 10, 13];
+            if (!priceInput) {
+                alert('請先輸入你目前看到的真實股價！');
+                return;
             }
 
+            currentStockLabel = inputVal;
             predStockNameEl.textContent = currentStockLabel;
 
+            // 預設為高品質標的勾選 (可手動自由微調)
+            const activeIndices = [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 13, 14];
             checkboxes.forEach((cb, idx) => {
                 cb.checked = activeIndices.includes(idx);
             });
 
             calculateScore();
-            alert(`✅ 已成功載入【${currentStockLabel}】分析與戰術模型！`);
         }
 
         function resetForm() {
@@ -460,7 +439,7 @@
                            `-----------------------------------\n` +
                            `■ 標的：${stockCode}\n` +
                            `■ 研究日期：${stockDate}\n` +
-                           `■ 校正現價：$${currentPrice} 元\n` +
+                           `■ 當前現價：$${currentPrice} 元\n` +
                            `■ 綜合評分：${score} / 100 分\n` +
                            `■ 預估隔天續漲勝率：${winRate} (${trend})\n` +
                            `■ 建議月線承接價：${tMA20}\n` +
